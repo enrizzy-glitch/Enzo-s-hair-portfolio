@@ -1,0 +1,629 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>Enzo Rizzuto Term Showcase</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Figtree:wght@400;500;600&display=swap">
+<style>
+/* Layout: an Instagram-style profile. Header = cover + bio, highlights = the 5 sections, grid = styles, modal = before/during/after carousel + write-up */
+:root{
+  --bg:#ffffff; --surface:#f3f5f9; --line:#dfe4ee; --fg:#0e1420; --muted:#5d6779;
+  --accent:#1e3a6e; --accent-soft:#e3e9f4; --ring:#1e3a6e; --scrim:rgba(8,12,20,.72);
+  --display:"Bricolage Grotesque", "Helvetica Neue", Arial, sans-serif;
+  --body:"Figtree", "Helvetica Neue", Arial, sans-serif;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --bg:#0b0f17; --surface:#141a26; --line:#252d3d; --fg:#eef1f7; --muted:#9aa4b8;
+  --accent:#8fb0ea; --accent-soft:#1a2540; --ring:#8fb0ea; --scrim:rgba(0,0,0,.8); color-scheme:dark } }
+:root[data-theme="dark"]{
+  --bg:#0b0f17; --surface:#141a26; --line:#252d3d; --fg:#eef1f7; --muted:#9aa4b8;
+  --accent:#8fb0ea; --accent-soft:#1a2540; --ring:#8fb0ea; --scrim:rgba(0,0,0,.8); color-scheme:dark }
+
+*{box-sizing:border-box}
+body{margin:0}
+[hidden]{display:none!important}
+body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:15px;line-height:1.5;
+  padding-left:max(16px, env(safe-area-inset-left, 0px));padding-right:max(16px, env(safe-area-inset-right, 0px))}
+.wrap{max-width:935px;margin:0 auto;padding-block:20px 60px}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+button:focus-visible,.tile:focus-visible{outline:2px solid var(--ring);outline-offset:3px}
+
+/* top bar */
+.topbar{display:flex;align-items:center;justify-content:space-between;padding-block:4px 18px;border-bottom:1px solid var(--line)}
+.handle{font-family:var(--display);font-weight:700;font-size:20px;letter-spacing:-.01em}
+.school{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+
+/* profile header */
+.profile{display:grid;grid-template-columns:auto 1fr;gap:28px;align-items:center;padding-block:28px 8px}
+.avatar{width:132px;height:132px;border-radius:50%;padding:4px;background:conic-gradient(from 200deg,var(--accent),#3e66ae,#9db8e3,var(--accent))}
+.avatar img{width:100%;height:100%;object-fit:cover;object-position:50% 50%;border-radius:50%;border:3px solid var(--bg);display:block}
+.pinfo{min-width:0;display:grid;gap:10px}
+.pname{font-family:var(--display);font-weight:700;font-size:clamp(24px,4vw,32px);line-height:1.1;text-wrap:balance}
+.stats{display:flex;gap:22px;flex-wrap:wrap;font-size:15px}
+.stats b{font-weight:600;font-variant-numeric:tabular-nums}
+.bio{max-width:60ch;color:var(--fg)}
+.bio .role{color:var(--muted)}
+.btnrow{display:flex;gap:8px;flex-wrap:wrap}
+.btn{background:var(--surface);border:1px solid var(--line);padding:7px 16px;border-radius:8px;font-weight:600;font-size:14px}
+.btn.primary{background:var(--accent);color:var(--bg);border-color:var(--accent)}
+
+/* highlights */
+.highlights{display:flex;gap:22px;overflow-x:auto;padding-block:22px 18px;scrollbar-width:none}
+.highlights::-webkit-scrollbar{display:none}
+.hl{display:grid;justify-items:center;gap:7px;flex:0 0 auto;width:84px}
+.hl .ring{width:76px;height:76px;border-radius:50%;padding:3px;border:1px solid var(--line);background:var(--bg)}
+.hl.active .ring{border:2px solid var(--accent);padding:2px}
+.hl .ring img{width:100%;height:100%;border-radius:50%;object-fit:cover;display:block}
+.hl .ring .all{width:100%;height:100%;border-radius:50%;background:var(--accent-soft);display:grid;place-items:center;font-family:var(--display);font-weight:700;color:var(--accent);font-size:15px}
+.hl span{font-size:12px;font-weight:500;text-align:center;line-height:1.25}
+
+/* section title page */
+.sectionpage{border-top:1px solid var(--line);padding-block:26px 22px;display:grid;gap:8px}
+.eyebrow{font-size:12px;letter-spacing:.09em;text-transform:uppercase;color:var(--accent);font-weight:600}
+.sectionpage h2{font-family:var(--display);font-weight:700;font-size:clamp(22px,3.4vw,30px);margin:0;line-height:1.15;text-wrap:balance}
+.sectionpage p{margin:0;max-width:66ch;color:var(--muted)}
+
+/* grid */
+.tabs{display:flex;justify-content:center;gap:40px;border-top:1px solid var(--line);font-size:12px;letter-spacing:.1em;text-transform:uppercase;font-weight:600}
+.tabs span{padding-block:14px;border-top:1px solid var(--fg);margin-top:-1px}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:4px}
+.tile{position:relative;aspect-ratio:4/5;background:var(--surface);overflow:hidden;cursor:pointer;display:block;width:100%;padding:0;max-width:100%}
+.tile img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .4s ease}
+.tile:hover img{transform:scale(1.03)}
+.tile .tag{position:absolute;left:8px;bottom:8px;background:rgba(10,14,22,.62);color:#fff;font-size:11px;font-weight:600;padding:3px 8px;border-radius:999px;letter-spacing:.02em}
+.tile .multi{position:absolute;top:8px;right:8px;width:18px;height:18px}
+.tile.soon{border:2px dashed var(--line);background:var(--bg);display:grid;place-items:center;text-align:center;padding:14px;cursor:default}
+.tile.soon .s1{font-family:var(--display);font-weight:700;font-size:16px}
+.tile.soon .s2{font-size:12.5px;color:var(--muted);margin-top:4px}
+.tile.soon .num{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);font-weight:600;margin-bottom:6px}
+
+/* modal */
+.modal{position:fixed;inset:0;background:var(--scrim);display:grid;place-items:center;z-index:50;
+  padding:max(16px, env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) max(16px, env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px))}
+.card{background:var(--bg);width:min(1000px,100%);max-height:100%;display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);border-radius:6px;overflow:hidden}
+.media{position:relative;background:#000;aspect-ratio:4/5;max-height:calc(100vh - 32px);min-width:0}
+.media img{width:100%;height:100%;object-fit:contain;display:block}
+.media .ph{width:100%;height:100%;display:grid;place-items:center;text-align:center;color:#c9d2e3;background:#111827;padding:24px}
+.media .ph b{display:block;font-family:var(--display);font-size:20px;color:#fff;margin-bottom:6px}
+.slab{position:absolute;top:12px;left:12px;background:rgba(10,14,22,.7);color:#fff;font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;padding:4px 10px;border-radius:999px}
+.nav{position:absolute;top:50%;transform:translateY(-50%);width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,.88);color:#0e1420;display:grid;place-items:center;font-size:18px;line-height:1}
+.nav.prev{left:10px}.nav.next{right:10px}
+.dots{position:absolute;bottom:12px;left:0;right:0;display:flex;justify-content:center;gap:5px}
+.dots i{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.45)}
+.dots i.on{background:#fff}
+.side{display:flex;flex-direction:column;min-width:0;max-height:calc(100vh - 32px)}
+.sidehead{display:flex;align-items:center;gap:10px;padding:14px 16px;border-bottom:1px solid var(--line)}
+.sidehead img{width:32px;height:32px;border-radius:50%;object-fit:cover;object-position:50% 50%}
+.sidehead .h{font-weight:600;font-size:14px}
+.sidehead .c{font-size:12px;color:var(--muted)}
+.close{margin-left:auto;font-size:26px;line-height:1;width:36px;height:36px}
+.caption{overflow-y:auto;padding:16px 18px 22px;display:grid;gap:14px;align-content:start}
+.caption h3{font-family:var(--display);font-weight:700;font-size:22px;margin:0;line-height:1.15}
+.caption h4{margin:0 0 3px;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);font-weight:600}
+.caption p{margin:0;font-size:14.5px}
+.chips{display:flex;gap:6px;flex-wrap:wrap}
+.chip{font-size:12px;padding:3px 9px;border-radius:999px;background:var(--accent-soft);color:var(--accent);font-weight:600}
+
+/* statement */
+.statement{background:var(--bg);width:min(720px,100%);max-height:100%;overflow-y:auto;border-radius:6px;padding:34px clamp(20px,5vw,48px) 38px;position:relative}
+.statement h2{font-family:var(--display);font-weight:700;font-size:30px;margin:4px 0 16px;line-height:1.1}
+.statement p{margin:0 0 14px;max-width:62ch;font-size:16px}
+.statement .close{position:absolute;top:12px;right:12px}
+
+@media (max-width:720px){
+  .profile{grid-template-columns:1fr;justify-items:start;gap:16px}
+  .avatar{width:96px;height:96px}
+  .school{display:none}
+  .card{grid-template-columns:1fr;overflow-y:auto}
+  .media{max-height:none;aspect-ratio:4/5}
+  .side{max-height:none}
+  .caption{overflow:visible}
+  .grid{gap:3px}
+  .tile .tag{font-size:10px;left:5px;bottom:5px;padding:2px 6px}
+}
+@media (prefers-reduced-motion:reduce){ .tile img{transition:none} }
+
+/* ---------- hub: menu bar, home, document pages ---------- */
+.menubar{max-width:935px;margin:0 auto;display:flex;align-items:center;gap:12px;padding-block:14px;border-bottom:1px solid var(--line)}
+.menubar .back{display:inline-flex;align-items:center;gap:6px;font-weight:600;font-size:14px;padding:7px 12px 7px 8px;border-radius:8px;background:var(--surface);border:1px solid var(--line)}
+.menubar .crumb{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-left:auto;text-align:right}
+.home{max-width:935px;margin:0 auto;padding-block:36px 70px;display:grid;gap:34px}
+.hero{display:grid;grid-template-columns:auto 1fr;gap:24px;align-items:center}
+.hero .avatar{width:112px;height:112px}
+.hero h1{font-family:var(--display);font-weight:700;font-size:clamp(34px,6vw,56px);line-height:1;margin:0 0 8px;letter-spacing:-.02em;text-wrap:balance}
+.hero p{margin:0;color:var(--muted);max-width:56ch}
+.hero .eyebrow{margin-bottom:8px}
+.projects{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.pcard{display:grid;grid-template-rows:auto 1fr;text-align:left;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:var(--bg);transition:transform .2s ease,border-color .2s ease}
+.pcard:hover{transform:translateY(-3px);border-color:var(--accent)}
+.pcard .art{aspect-ratio:4/3;background:var(--surface);position:relative;overflow:hidden;max-width:100%}
+.pcard .art img{width:100%;height:100%;object-fit:cover;display:block}
+.pcard .art.trio{display:grid;grid-template-columns:repeat(3,1fr);gap:2px}
+.pcard .art svg{width:100%;height:100%;display:block}
+.pcard .body{padding:16px 16px 18px;display:grid;gap:6px;align-content:start}
+.pcard .num{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);font-weight:600}
+.pcard h2{font-family:var(--display);font-weight:700;font-size:21px;line-height:1.15;margin:0}
+.pcard p{margin:0;color:var(--muted);font-size:14px}
+.pcard .go{margin-top:6px;font-weight:600;font-size:14px;color:var(--accent)}
+.homefoot{font-size:13px;color:var(--muted);border-top:1px solid var(--line);padding-top:16px}
+
+.doc{max-width:760px;margin:0 auto;padding-block:30px 80px}
+.doc .dhead{display:grid;gap:8px;padding-bottom:22px;border-bottom:1px solid var(--line);margin-bottom:8px}
+.doc h1{font-family:var(--display);font-weight:700;font-size:clamp(30px,5vw,44px);line-height:1.05;margin:0;letter-spacing:-.02em;text-wrap:balance}
+.doc .sub{color:var(--muted);margin:0}
+.doc .toc{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.doc .toc button{font-size:13px;font-weight:600;padding:5px 11px;border-radius:999px;background:var(--accent-soft);color:var(--accent)}
+.doc h2{font-family:var(--display);font-weight:700;font-size:26px;line-height:1.15;margin:40px 0 6px;scroll-margin-top:16px;text-wrap:balance}
+.doc h2 .smile{display:inline-block;margin-left:8px}
+.doc h3{font-size:17px;font-weight:600;margin:26px 0 6px;color:var(--fg)}
+.doc p{margin:0 0 12px;max-width:68ch}
+.doc ul,.doc ol{margin:0 0 14px;padding-left:22px;max-width:68ch}
+.doc li{margin-bottom:6px}
+.doc .lead{font-size:17px}
+.doc .note{font-size:13.5px;color:var(--muted);font-style:italic}
+.tablewrap{overflow-x:auto;margin:6px 0 16px;border:1px solid var(--line);border-radius:8px}
+.doc table{border-collapse:collapse;width:100%;font-size:14px;min-width:520px}
+.doc th{background:var(--accent);color:var(--bg);text-align:left;font-weight:600;padding:9px 12px}
+.doc td{padding:9px 12px;border-top:1px solid var(--line);vertical-align:top}
+.doc td:first-child{font-weight:600}
+.doc tr:nth-child(even) td{background:var(--surface)}
+.wheelbox{display:grid;justify-items:center;margin:14px 0 22px;gap:6px}
+.wheelbox svg{width:min(360px,100%);height:auto}
+.wheelbox .cap{font-size:12.5px;color:var(--muted);text-align:center}
+.skipped{display:flex;align-items:center;gap:12px;padding:16px 18px;border:1px dashed var(--line);border-radius:10px;margin:10px 0}
+.skipped b{font-family:var(--display);font-size:18px}
+.skipped span{color:var(--muted);font-size:14px}
+.todo{border:2px dashed var(--line);border-radius:10px;padding:16px 18px;color:var(--muted);margin:8px 0 14px;background:var(--bg)}
+.todo b{color:var(--fg)}
+.photorow{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:8px 0 16px}
+.photorow .slot{aspect-ratio:4/5;border:2px dashed var(--line);border-radius:8px;display:grid;place-items:center;text-align:center;padding:10px;color:var(--muted);font-size:13px;max-width:100%}
+.photorow .slot b{display:block;color:var(--fg);font-size:14px;margin-bottom:2px}
+@media (max-width:720px){
+  .projects{grid-template-columns:1fr}
+  .hero{grid-template-columns:1fr;gap:14px}
+  .hero .avatar{width:88px;height:88px}
+  .photorow{grid-template-columns:1fr 1fr}
+}
+@media (prefers-reduced-motion:reduce){ .pcard{transition:none} .pcard:hover{transform:none} }
+</style>
+</head><body>
+
+
+<div class="menubar" id="menubar" hidden>
+  <button class="back" data-view="home" aria-label="Back to main menu"><span aria-hidden="true">‹</span> Main menu</button>
+  <div class="crumb" id="crumb"></div>
+</div>
+
+<section class="home" id="view-home">
+  <div class="hero">
+    <div class="avatar"><img src="img/profile.jpg" alt="Enzo Rizzuto"></div>
+    <div>
+      <div class="eyebrow">NIWE Academy · Hairstyling Term Showcase</div>
+      <h1>Enzo Rizzuto</h1>
+      <p>Hairstylist from Calgary, Alberta. Three projects from this term: my styling portfolio, my colour theory project and my Hollywood-style perm.</p>
+    </div>
+  </div>
+  <div class="projects">
+    <button class="pcard" data-view="portfolio">
+      <div class="art trio"><img src="img/IMG_4772.jpg" alt=""><img src="img/IMG_5596.jpg" alt=""><img src="img/IMG_5767.jpg" alt=""></div>
+      <div class="body"><div class="num">Project 1</div><h2>Styling Portfolio</h2><p>Roller sets, perm wrapping, colour and up-dos, with before, during and after photos.</p><div class="go">Open portfolio ›</div></div>
+    </button>
+    <button class="pcard" data-view="colour">
+      <div class="art"><svg id="cardWheel" viewBox="0 0 200 150" aria-hidden="true"></svg></div>
+      <div class="body"><div class="num">Project 2</div><h2>Colour Theory in Hair Design</h2><p>Corrective colour: neutralizing brass with the colour wheel.</p><div class="go">Open project ›</div></div>
+    </button>
+    <button class="pcard" data-view="perm">
+      <div class="art"><svg id="cardPerm" viewBox="0 0 200 150" aria-hidden="true"></svg></div>
+      <div class="body"><div class="num">Project 3</div><h2>Hollywood-Style Perm</h2><p>Choosing rod sizes and placement to recreate a Hollywood curl pattern.</p><div class="go">Open project ›</div></div>
+    </button>
+  </div>
+  <div class="homefoot">Enzo Rizzuto · NIWE Academy Hairstyling Program · 2026</div>
+</section>
+
+<article class="doc" id="view-colour" hidden>
+  <div class="dhead">
+    <div class="eyebrow">Project 2 · Corrective Colour Project</div>
+    <h1>Colour Theory in Hair Design</h1>
+    <p class="sub">Neutralizing brassy, over-processed hair with complementary colour theory.</p>
+    <div class="toc">
+      <button data-jump="c-overview">Overview</button><button data-jump="c-part1">Part 1: Research</button><button data-jump="c-part23">Parts 2 &amp; 3</button><button data-jump="c-part4">Part 4: Reflection</button><button data-jump="c-examples">Example projects</button>
+    </div>
+  </div>
+
+  <h2 id="c-overview">Project Overview</h2>
+  <p class="lead">This project focuses on <b>corrective colour</b>: using colour theory to fix brassy, over-processed hair by neutralizing unwanted warm tones with their complementary colours.</p>
+  <p><b>Why corrective colour:</b> it shows colour theory most directly. Brass is unwanted warm pigment, and the fix is its exact opposite on the colour wheel. Orange is cancelled by blue, yellow by violet. That one rule connects every part of this project.</p>
+
+  <h2 id="c-part1">Part 1: Research and Theory</h2>
+  <h3>Introduction to Colour Theory</h3>
+  <p>Colour theory is the set of rules that explains how colours mix and cancel each other. In the salon, it is what lets a colourist predict a result instead of hoping for one. Every toner, gloss and correction is colour theory in a bowl.</p>
+  <p><b>Primary colours</b> are red, yellow and blue. They cannot be made by mixing other colours, and every hair pigment is built from them.</p>
+  <ul>
+    <li><b>Blue</b> is the strongest and darkest primary, but it is also the first to wash out. That's why a cool ash blonde slowly turns warmer between appointments, and why clients go home with a blue or violet shampoo.</li>
+    <li><b>Red</b> is medium strength. It adds warmth and richness, and it's the pigment that makes brunettes look "too red" after lightening.</li>
+    <li><b>Yellow</b> is the weakest primary and the hardest to remove. It's the last pigment left when hair is lightened, so even very light blondes need toning.</li>
+  </ul>
+  <p><b>Secondary colours</b> mix two primaries: red + yellow = <b>orange</b>, yellow + blue = <b>green</b>, blue + red = <b>violet</b>. Violet is in purple shampoo, green-based (matt) shades calm redness, and orange is the copper family.</p>
+  <p><b>Tertiary colours</b> mix a primary with the secondary beside it: gold, copper, mahogany and blue-violet. These are the tones printed on colour tubes, so reading a shade chart is really reading the colour wheel.</p>
+  <div class="wheelbox"><svg id="docWheel" viewBox="0 0 360 360" role="img" aria-label="Colour wheel with twelve colours"></svg><div class="cap">Bold = primary · Medium = secondary · Light = tertiary · Opposites are complementary</div></div>
+
+  <h3>The Colour Wheel and Colour Schemes</h3>
+  <p>A colourist uses the wheel two ways: to <b>cancel</b> a tone the client doesn't want, and to <b>build</b> a look whose tones work together.</p>
+  <div class="tablewrap"><table>
+    <tr><th>Scheme</th><th>How it works</th><th>Behind the chair</th></tr>
+    <tr><td>Complementary</td><td>Colours directly opposite: red and green, orange and blue, yellow and violet. Mixed together, they cancel to a neutral.</td><td>This is toning. Violet cancels yellow in blondes, blue cancels orange in lightened brunettes, and chlorine-green hair is fixed with a red or copper filler.</td></tr>
+    <tr><td>Analogous</td><td>Colours side by side, such as gold, honey and copper.</td><td>Sun-kissed balayage and warm brunette dimension, with no harsh lines.</td></tr>
+    <tr><td>Split-complementary</td><td>One colour plus the two on either side of its opposite.</td><td>A cool ash base with soft golden or copper face-framing pieces.</td></tr>
+  </table></div>
+
+  <h3>Warm and Cool Tones</h3>
+  <p><b>Warm tones</b> carry more red, orange or yellow: gold, copper, honey, auburn. <b>Cool tones</b> carry more blue, green or violet: ash, pearl, platinum, smoky beige. <b>Neutral tones</b> sit in between and suit the widest range of clients.</p>
+  <p>Warmth isn't a mistake, it's a choice. A client asking for "no warmth at all" needs to know that brunettes always reveal warmth when lightened, and that cool tones fade first. Setting that expectation at the consultation is part of applying colour theory.</p>
+
+  <h3>Hair Colour Levels</h3>
+  <p>Level is how light or dark the hair is, from 1 (black) to 10 (lightest blonde). When hair is lightened, the dark pigment breaks down first and leaves warm <b>underlying pigment</b> behind. Lightening a level 5 brunette to a level 9 passes through red, then orange, then yellow. Rinse too early and the client leaves orange, which is exactly what happens with box bleach at home.</p>
+  <div class="tablewrap"><table>
+    <tr><th>Level</th><th>Name</th><th>Underlying pigment</th><th>Neutralized by</th></tr>
+    <tr><td>1–3</td><td>Black to dark brown</td><td>Red</td><td>Green</td></tr>
+    <tr><td>4–5</td><td>Medium to light brown</td><td>Red-orange</td><td>Blue-green</td></tr>
+    <tr><td>6</td><td>Dark blonde</td><td>Orange</td><td>Blue</td></tr>
+    <tr><td>7</td><td>Medium blonde</td><td>Orange-yellow (gold)</td><td>Blue-violet</td></tr>
+    <tr><td>8</td><td>Light blonde</td><td>Yellow-gold</td><td>Violet-blue</td></tr>
+    <tr><td>9</td><td>Very light blonde</td><td>Yellow</td><td>Violet</td></tr>
+    <tr><td>10</td><td>Lightest blonde</td><td>Pale yellow</td><td>Pale violet</td></tr>
+  </table></div>
+  <p class="note">This table is the key to the project. Brass is underlying pigment that was exposed and never toned.</p>
+
+  <h3>Undertones in Hair Colour</h3>
+  <p>Undertone is the tone sitting underneath the main colour. Two level 7 blondes can look completely different in window light: one glows golden, the other looks smoky. Warm undertones flash gold, copper or red; cool undertones look ashy or smoky; neutral sits in between.</p>
+  <p>Colour lines write tone after the level. In Wella, /0 is natural, /1 ash, /3 gold, /4 red, /6 violet and /8 pearl. So 8/81 is a level 8 with a pearl main tone and an ash secondary tone, and reading the number tells you which brass it will cancel before the tube is opened.</p>
+
+  <h3>Hair Colour Application Methods</h3>
+  <div class="tablewrap"><table>
+    <tr><th>Method</th><th>What it is</th><th>When a client asks for…</th></tr>
+    <tr><td>Tint</td><td>One colour root to ends</td><td>"Cover my greys" or "I want to go darker"</td></tr>
+    <tr><td>Root touch-up</td><td>Colour on new growth only</td><td>Keeping a colour fresh every 4 to 6 weeks</td></tr>
+    <tr><td>Highlights</td><td>Fine sections lightened in foil</td><td>"Brighter, but evenly blended"</td></tr>
+    <tr><td>Balayage</td><td>Lightener painted freehand</td><td>"Sun-kissed and low maintenance"</td></tr>
+    <tr><td>Ombré</td><td>Dark roots fading lighter</td><td>"A bold, obvious gradient"</td></tr>
+    <tr><td>Gloss / toner</td><td>Deposit-only colour over lightened hair</td><td>"Get rid of the brass" or "add shine"</td></tr>
+    <tr><td>Shadow root</td><td>Darker tone blended at the root</td><td>"I hate my grow-out line"</td></tr>
+  </table></div>
+
+  <h3>Skin Tones and Hair Types</h3>
+  <p><b>Skin tone.</b> Warm skin (golden, peach, olive) usually glows in honey, caramel and copper. Cool skin (pink, red or blue undertones) usually looks fresher in ash, beige, platinum and cool brown. Quick checks: veins look blue-purple on cool skin and green on warm skin, and clients usually already wear the metal that suits them. Always check in natural light.</p>
+  <p><b>Eye colour.</b> Cool blondes brighten blue and grey eyes. Copper and gold bring out green and hazel eyes.</p>
+  <ul>
+    <li><b>Fine hair</b> processes faster and lifts easily, so check it often and consider a lower-volume developer.</li>
+    <li><b>Coarse or resistant hair</b> takes longer to lift and may need more time.</li>
+    <li><b>Porous hair</b>, like box-bleached ends, grabs colour fast. Ash can turn grey or green, so ends often get a softer formula or less time.</li>
+    <li><b>Healthy, low-porosity hair</b> resists colour and can look patchy if rushed.</li>
+  </ul>
+
+  <h3>Psychology and Culture</h3>
+  <p>A colour that works lifts a client's confidence the moment they see the mirror. One that clashes gets described as "I look tired" even when they can't say why. Warm tones read as approachable and energetic; cool tones read as polished and calm. Brass on cool skin looks flushed, and heavy ash on warm skin looks grey.</p>
+  <p>Most requests now arrive as an Instagram, TikTok or Pinterest photo, often filtered, so part of the consultation is explaining what's realistic. Celebrities drive trends fast, trends cycle (platinum, then "expensive brunette", then back), and seasons and workplaces shape choices too. A good colourist uses trends as inspiration and adjusts them to the client.</p>
+
+  <h2 id="c-part23">Parts 2 &amp; 3</h2>
+  <div class="skipped"><svg class="smile" width="24" height="24" viewBox="0 0 24 24" aria-label="Not required"><circle cx="12" cy="12" r="10.5" fill="#FFD84D" stroke="currentColor" stroke-width="1.3"/><circle cx="8.6" cy="9.6" r="1.3" fill="#0e1420"/><circle cx="15.4" cy="9.6" r="1.3" fill="#0e1420"/><path d="M7.4 13.6c1.2 2.2 2.8 3.2 4.6 3.2s3.4-1 4.6-3.2" fill="none" stroke="#0e1420" stroke-width="1.4" stroke-linecap="round"/></svg><div><b>Part 2: Colour Experimentation and Application</b></div></div>
+  <div class="skipped"><svg class="smile" width="24" height="24" viewBox="0 0 24 24" aria-label="Not required"><circle cx="12" cy="12" r="10.5" fill="#FFD84D" stroke="currentColor" stroke-width="1.3"/><circle cx="8.6" cy="9.6" r="1.3" fill="#0e1420"/><circle cx="15.4" cy="9.6" r="1.3" fill="#0e1420"/><path d="M7.4 13.6c1.2 2.2 2.8 3.2 4.6 3.2s3.4-1 4.6-3.2" fill="none" stroke="#0e1420" stroke-width="1.4" stroke-linecap="round"/></svg><div><b>Part 3: Colour Theory in Practice</b></div></div>
+
+  <h2 id="c-part4">Part 4: Analysis and Reflection</h2>
+  <div class="tablewrap"><table>
+    <tr><th>Client</th><th>Summary</th></tr>
+    <tr><td>Who</td><td>Maya, 29, marketing coordinator (fictional client). Polished, minimalist style; wants low maintenance.</td></tr>
+    <tr><td>Colouring</td><td>Fair skin with a cool pink undertone, blue-grey eyes, natural level 6 neutral-ash.</td></tr>
+    <tr><td>The problem</td><td>Box bleach left orange mids (level 7) and yellow-gold, porous ends (level 8), with a harsh band at the regrowth.</td></tr>
+    <tr><td>The goal</td><td>A level 8 cool beige blonde with a soft level 6 shadow root.</td></tr>
+    <tr><td>The service</td><td>Spot-lift the orange to an even level 8, shadow root at the regrowth, then zone toning: blue-based pearl-ash on the mids and a custom pearl-ash and violet blend on the ends.</td></tr>
+  </table></div>
+  <h3>Colour Theory Principles Applied</h3>
+  <p>Maya's brass was exposed underlying pigment: orange at level 7 and yellow-gold at level 8. Blue sits opposite orange, so I used a blue-based pearl-ash on the mids. Violet sits opposite yellow, so I mixed a custom pearl-ash and ash-violet blend for the ends. I chose a cool scheme because her fair, pink-toned skin and blue-grey eyes are cool, and the level 6 shadow root blended her regrowth softly.</p>
+  <h3>Did the Final Colour Match the Client Profile?</h3>
+  <p>Yes. The result was a soft, natural level 8 cool beige blonde with no visible orange or gold, and the shadow root melted into her regrowth. It brightens her blue-grey eyes, calms the redness in her skin, and lets her stretch appointments to the 8 to 10 weeks she wanted.</p>
+  <p><b>Adjustment made:</b> at my 5-minute check, the porous ends were taking the violet blend much faster than the mids. I rinsed the ends at about 10 minutes instead of 15 while the mids kept processing. Without that change, the ends would have come out darker and greyer.</p>
+  <h3>Challenge: the porous ends grabbed the toner</h3>
+  <p>Porous hair has an open cuticle, so it absorbs colour faster and holds more of it, especially ash and violet. Checking every 5 minutes let me catch it early. Next time I'd treat porosity before toning and apply the toner to the mids first and the ends last.</p>
+  <h3>How Colour Theory Influenced My Decisions</h3>
+  <p><b>I read the brass before choosing anything.</b> I identified orange in the mids and yellow on the ends, then matched each to its opposite, which is why I used two toners instead of one. It also taught me to <b>treat the ends as their own zone</b>, because the hair's condition decides how strongly it takes colour. Colour theory makes results predictable, and that's what I'll bring to real clients.</p>
+
+  <h2 id="c-examples">Colour Theory Across the Example Projects</h2>
+  <div class="tablewrap"><table>
+    <tr><th>Project</th><th>Main scheme</th><th>Key colour theory move</th></tr>
+    <tr><td>Balayage</td><td>Analogous (warm) or complementary (cool)</td><td>Use or cancel the orange revealed by lightening a level 5 brunette</td></tr>
+    <tr><td>Corrective colour</td><td>Complementary</td><td>Blue cancels orange, violet cancels yellow; lift evenly before toning</td></tr>
+    <tr><td>Fashion colour</td><td>Depends on shade and skin tone</td><td>Lift to a clean pale base, since leftover yellow turns blue green and pink peach</td></tr>
+  </table></div>
+</article>
+
+<article class="doc" id="view-perm" hidden>
+  <div class="dhead">
+    <div class="eyebrow">Project 3 · Perm Assignment</div>
+    <h1>Hollywood-Style Perm</h1>
+    <p class="sub">Recreating a Hollywood curl pattern on a mannequin by choosing the right rod sizes and placement.</p>
+  </div>
+
+  <h2>The Reference</h2>
+  <div class="todo"><b>To add:</b> the reference photo you chose (for example Marilyn Monroe's soft waves or a 1980s volume curl), plus one line on why you picked it.</div>
+
+  <h2>Analyzing the Style</h2>
+  <div class="todo"><b>To add:</b> the curl size in the photo, which direction the curls move, and the overall shape of the style.</div>
+
+  <h2>Rod Plan</h2>
+  <div class="tablewrap"><table>
+    <tr><th>Area</th><th>Rod size / colour</th><th>Placement and direction</th></tr>
+    <tr><td>Front / fringe</td><td>—</td><td>—</td></tr>
+    <tr><td>Top / crown</td><td>—</td><td>—</td></tr>
+    <tr><td>Sides</td><td>—</td><td>—</td></tr>
+    <tr><td>Nape</td><td>—</td><td>—</td></tr>
+  </table></div>
+
+  <h2>Process Photos</h2>
+  <div class="photorow">
+    <div class="slot"><div><b>Before</b>Mannequin prepped</div></div>
+    <div class="slot"><div><b>Rods in</b>Full wrap</div></div>
+    <div class="slot"><div><b>Final look</b>Rods out and styled</div></div>
+  </div>
+
+  <h2>Write-Up</h2>
+  <div class="todo"><b>To add (200–300 words):</b> why you chose these rod sizes and placements, how they helped match the reference photo, and any challenges and how you solved them.</div>
+</article>
+
+<div class="wrap" id="view-portfolio" hidden>
+  <div class="topbar">
+    <div class="handle">enzorizzuto.hair</div>
+    <div class="school">Project 1 · Styling Portfolio</div>
+  </div>
+
+  <section class="profile" aria-label="Cover">
+    <div class="avatar"><img src="img/profile.jpg" alt="Enzo Rizzuto"></div>
+    <div class="pinfo">
+      <div class="pname">Enzo Rizzuto</div>
+      <div class="stats" id="stats"></div>
+      <div class="bio"><span class="role">Hairstylist · Calgary, Alberta</span><br>Styling Portfolio, NIWE Academy hairstyling program. Roller sets, perm wrapping, colour, up-dos and modern styling, documented step by step.</div>
+      <div class="btnrow">
+        <button class="btn primary" id="openStatement">Personal statement</button>
+        <button class="btn" data-sec="all" id="viewAll">View all work</button>
+      </div>
+    </div>
+  </section>
+
+  <nav class="highlights" id="highlights" aria-label="Portfolio sections"></nav>
+  <section class="sectionpage" id="sectionpage" hidden></section>
+  <div class="tabs"><span>Posts</span></div>
+  <div class="grid" id="grid"></div>
+</div>
+
+<div class="modal" id="postModal" hidden role="dialog" aria-modal="true" aria-label="Style details">
+  <div class="card">
+    <div class="media" id="media"></div>
+    <div class="side">
+      <div class="sidehead">
+        <img src="img/profile.jpg" alt="">
+        <div><div class="h">enzorizzuto.hair</div><div class="c" id="pcat"></div></div>
+        <button class="close" id="closePost" aria-label="Close">×</button>
+      </div>
+      <div class="caption" id="caption"></div>
+    </div>
+  </div>
+</div>
+
+<div class="modal" id="stModal" hidden role="dialog" aria-modal="true" aria-label="Personal statement">
+  <article class="statement">
+    <button class="close" id="closeSt" aria-label="Close">×</button>
+    <div class="eyebrow">Personal statement</div>
+    <h2>Technique first, then creativity</h2>
+    <p>My name is Enzo Rizzuto, and I'm a hairstylist from Calgary, Alberta. I grew up around hair. My family runs Curios Hair, and being in the salon is how I first saw what a good stylist can do for someone's confidence. Watching a client leave feeling more like themselves is what made me want to take this work seriously.</p>
+    <p>This portfolio documents my term at NIWE Academy, where I'm completing my hairstyling training alongside my apprenticeship. Over ten weeks I worked through roller sets, perm wrapping, colour, up-dos and modern styling. Some of it came naturally. Some of it, like keeping clean sections and even tension on a roller set, took a lot of repetition before it looked the way I wanted.</p>
+    <p>My philosophy is simple. A style only looks effortless when the foundation underneath it is right: clean sections, the right tension and the right product. Once that's solid, I like to take classic techniques and finish them in a softer, more modern way that a client can actually wear.</p>
+    <p>My goal is to keep building my skills, especially in colour, and to grow my own clientele behind the chair. This portfolio is the starting point for that: a record of where my technique is today and how far it has come this term.</p>
+  </article>
+</div>
+
+<script>
+const SECTIONS = [
+  {id:"roller", name:"Roller Sets, Pin Curls & Finger Waves", short:"Roller Sets", cover:"IMG_5009",
+   text:"Wet sets that build curl and volume with rollers and pin curls. These classic techniques are the base of a lot of vintage and formal styling, and they taught me how sectioning, tension and roller size control the final shape."},
+  {id:"chem", name:"Chemical Waves & Straightening", short:"Chemical Waves", cover:"IMG_5055",
+   text:"Perm wrapping and chemical texture. My work here is a full practice perm wrap, focused on clean sectioning, end paper control and even tension on the smallest rods."},
+  {id:"colour", name:"Colour Application & Specialty Techniques", short:"Colour", cover:"IMG_5596",
+   text:"Colour application and specialty techniques. This section shows foil weave highlights with lightener and toner, and how toning finishes a lightened result."},
+  {id:"updo", name:"Up-Dos", short:"Up-Dos", cover:"IMG_4772",
+   text:"Formal and event styling. These up-dos show how I build shape and structure with curls, pins and smoothing."},
+  {id:"creative", name:"Creative & Trend-Based Styles", short:"Creative", cover:"IMG_5601",
+   text:"Modern, social-media-driven looks. These styles show how I take a classic technique and finish it in a current way."}
+];
+
+// photo helper: [file, label]  —  null file = placeholder still to add
+const B = ["", "Before"];
+const POSTS = [
+  {sec:"roller", title:"Roller Set", cover:"IMG_5767",
+   photos:[["RS_1","Before"],["RS_2","During"],["RS_3","During"],["RS_4","During"],["IMG_5767","After"],["IMG_5766","After"]],
+   process:"I started with the hair damp and sectioned it cleanly into panels with clips so the set would be even. I set a centre panel from the front hairline back to the nape first, placing each roller on base and keeping every parting the same width as the roller. Then I worked down the sides and back, adding pin curls around the face and temples. Once the full set was in, I dried it under the hood dryer and let it cool completely so the curl would hold. I took the rollers out and broke the curls up lightly with my fingers to finish with soft, bouncy curls.",
+   tools:"Rollers in a few sizes, roller pins, sectioning clips, pin curl clips, tail comb, spray bottle and hood dryer. Redken hairspray to finish.",
+   challenges:"Keeping each section clean and the same width as the roller. Sections that were too wide left dents and flat spots, so I redid those with narrower partings and more even tension.",
+   outcome:"Soft, voluminous curls with movement all over the head. Next time I'd set the sides a little tighter for more even volume all the way around."},
+  {sec:"roller", title:"Finger Waves & Pin Curls", cover:"FW_5010",
+   photos:[B,["FW_5010","During"],["FW_5007","During"],["FW_4934","During"],["FW_5020","After"]],
+   process:"Before setting the rollers, I worked on the front and sides of the head. With the hair damp and combed through, I shaped the front hairline into finger waves, pushing each ridge into place with my fingers and a fine-tooth comb and clipping it to hold the S-shape. Around the temples and sides I sculpted pin curls, winding each strand flat into a circle with the ends inside and securing it with a clip without crushing the curl. Then I set the rest of the head with rollers, dried the full set under the hood dryer and let it cool before removing the clips.",
+   tools:"Fine-tooth comb, tail comb, single-prong and double-prong clips, spray bottle and hood dryer. Redken hairspray to finish.",
+   challenges:"Keeping the ridges of the finger waves sharp and evenly spaced. The hair started drying while I worked, so the waves went soft. I kept the hair damp with the spray bottle and clipped each ridge as soon as I formed it.",
+   outcome:"Defined pin curls and a sculpted wave at the front that blended into the brushed-out set. Next time I'd do a full head of finger waves on its own to show the pattern more clearly."},
+
+  {sec:"chem", title:"Perm Wrap", cover:"IMG_5062",
+   photos:[B,["IMG_5055","During"],["IMG_5062","After"],["IMG_5063","After"]],
+   process:"I sectioned the hair into a wrapping pattern and wrapped the whole head with the smallest white perm rods. For each rod I took a clean section the width of the rod, folded an end paper around the ends, then rolled down to the scalp with even tension and secured the band. This was a practice wrap, so we used water instead of perm solution and neutralizer, but I went through the full steps of saturating, timing and rinsing as if it were real. Then I unwrapped the rods to check the curl pattern.",
+   tools:"Smallest white perm rods, end papers, tail comb, sectioning clips, applicator bottle, cotton and towels.",
+   challenges:"Keeping the ends smooth on such small rods. Ends that weren't fully inside the end paper bent into fishhooks, so I rewrapped those rods more slowly.",
+   outcome:"The curl relaxed into loose, crimped waves once unwrapped, which makes sense because water can't change the hair's structure. With real solution and neutralizer, the same wrap would lock in a tight, even curl."},
+
+  {sec:"colour", title:"Weave Highlights", cover:"IMG_5596",
+   photos:[B,["IMG_5596","After"],["IMG_5597","After"],["IMG_5598","After"]],
+   process:"I sectioned the hair and took thin slices, weaving out fine pieces with the tail of my comb. I placed each woven section on a foil, painted it with lightener mixed with 20 volume developer, and folded the foil closed. I worked through the head in an even pattern and checked the lift until the highlights reached a pale yellow. After rinsing, I toned with Redken Shades EQ 09GI to soften the yellow into a golden blonde, then rinsed, dried and styled.",
+   tools:"Foils, tail comb, clips, colour bowl and brush, gloves. Lightener with 20 volume developer. Redken Shades EQ 09GI toner.",
+   challenges:"Keeping the weave consistent. A few of my first sections were picked up too thick and showed as chunky stripes. I made my weaves finer and more even as I went, and kept the lightener off the root so nothing bled.",
+   outcome:"Soft, blended highlights that brighten the hair without looking stripy. Next time I'd keep the weaves the same size from the very first foil."},
+  {sec:"colour", soon:true, title:"Colour #2", note:"Root touch-up or gloss · shooting this week"},
+
+  {sec:"updo", title:"Formal Up-Do", cover:"IMG_4772",
+   photos:[B,["IMG_5022","During"],["IMG_5023","During"],["IMG_4772","After"],["IMG_4773","After"],["IMG_4774","After"],["IMG_4775","After"],["IMG_4776","After"],["IMG_4777","After"]],
+   process:"I brushed the hair out smooth and sprayed Redken heat protectant through every section. I curled the hair in small sections with a curling iron, then sectioned off the top and back so I could build the shape one area at a time. Starting at the nape, I gathered and pinned the curls into a cluster at the back of the head, placing each curl so it sat on top of the last. I worked up to the crown, then brought the top sections back into the shape and left a few soft pieces around the face.",
+   tools:"Curling iron, paddle brush, tail comb, sectioning clips, bobby pins and hairpins. Redken heat protectant and Redken hairspray.",
+   challenges:"Keeping the curls from looking flat once they were pinned. Pinning too tight squashed them, so I switched to looser crisscrossed pins hidden under each curl, which held them without crushing the shape.",
+   outcome:"A soft, textured formal up-do with lots of dimension from the back. Next time I'd add more volume at the crown before I start pinning."},
+  {sec:"updo", title:"Chignon", cover:"IMG_4783",
+   photos:[B,["IMG_4782","After"],["IMG_4783","After"],["IMG_4784","After"],["IMG_4785","After"]],
+   process:"I sprayed Redken heat protectant through the hair and smoothed it with a brush and blow dryer. I gathered the hair low at the nape and secured it, then twisted the length and wrapped it around itself to form the bun. I pinned the wrapped hair as I went, tucking the ends underneath so they wouldn't show. Then I smoothed the sides and back again to get a clean, polished line before setting the shape with hairspray.",
+   tools:"Paddle brush, smoothing brush, blow dryer, tail comb, elastic, bobby pins and hairpins. Redken heat protectant and Redken hairspray.",
+   challenges:"Bumps and flyaways along the sides when I pulled the hair back. I rebrushed those sections with a little hairspray on the brush and pinned the bun closer to the head so the shape stayed tight.",
+   outcome:"A classic, elegant low chignon with a smooth finish, the kind of style that works for weddings and formal events. Next time I'd work faster so the hairspray doesn't set before I finish smoothing."},
+
+  {sec:"creative", title:"Glam Curl Brush-Out", cover:"IMG_5601",
+   photos:[B,["IMG_5600","During"],["IMG_5601","After"],["IMG_5602","After"],["IMG_5603","After"],["IMG_5604","After"]],
+   process:"After the highlights, I styled the hair to show off the colour. I sprayed Redken heat protectant through the hair and curled small sections with a curling iron, pinning each curl up to cool so it would hold. Once every curl had set, I took the pins out and brushed the curls with a paddle brush, blending them into big, soft, bouncy waves with volume at the root. I finished with Redken hairspray.",
+   tools:"Curling iron, sectioning clips, pin curl clips, paddle brush and tail comb. Redken heat protectant and Redken hairspray.",
+   challenges:"When I brushed out the first few curls before they had fully cooled, they dropped and went frizzy. I waited until every curl was completely cool before brushing, which kept the shape.",
+   outcome:"A glamorous, voluminous finish that's on trend right now. It also shows how much dimension the highlights add once the hair has movement."},
+  {sec:"creative", soon:true, title:"Braided / Trend Style", note:"Shooting this week"}
+];
+
+const $ = s => document.querySelector(s);
+const img = f => `img/${f}.jpg`;
+let current = "all";
+
+function renderStats(){
+  const done = POSTS.filter(p=>!p.soon).length;
+  const photos = POSTS.reduce((n,p)=>n+(p.photos?p.photos.filter(x=>x[0]).length:0),0);
+  $("#stats").innerHTML = `<span><b>${done}</b> styles</span><span><b>${SECTIONS.length}</b> sections</span><span><b>${photos}</b> photos</span>`;
+}
+
+function renderHighlights(){
+  const hl = $("#highlights");
+  hl.innerHTML = `<button class="hl ${current==="all"?"active":""}" data-sec="all"><div class="ring"><div class="all">All</div></div><span>All work</span></button>` +
+    SECTIONS.map(s=>`<button class="hl ${current===s.id?"active":""}" data-sec="${s.id}"><div class="ring"><img src="${img(s.cover)}" alt=""></div><span>${s.short}</span></button>`).join("");
+}
+
+function renderSection(){
+  const sp = $("#sectionpage");
+  if(current==="all"){ sp.hidden = true; return; }
+  const s = SECTIONS.find(x=>x.id===current);
+  const n = POSTS.filter(p=>p.sec===current && !p.soon).length;
+  sp.hidden = false;
+  sp.innerHTML = `<div class="eyebrow">Section ${SECTIONS.indexOf(s)+1} of ${SECTIONS.length} · ${n} ${n===1?"style":"styles"}</div><h2>${s.name}</h2><p>${s.text}</p>`;
+}
+
+const MULTI = '<svg class="multi" viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M7 3h11a3 3 0 0 1 3 3v11h-2V6a1 1 0 0 0-1-1H7z"/><rect x="3" y="7" width="14" height="14" rx="2"/></svg>';
+
+function renderGrid(){
+  const list = current==="all" ? SECTIONS.flatMap(s=>POSTS.filter(p=>p.sec===s.id)) : POSTS.filter(p=>p.sec===current);
+  $("#grid").innerHTML = list.map(p=>{
+    const sec = SECTIONS.find(s=>s.id===p.sec);
+    if(p.soon) return `<div class="tile soon"><div><div class="num">${sec.short}</div><div class="s1">${p.title}</div><div class="s2">${p.note}</div></div></div>`;
+    const i = POSTS.indexOf(p);
+    return `<button class="tile" data-post="${i}" aria-label="${p.title}"><img src="${img(p.cover)}" alt="${p.title}" loading="lazy">${MULTI}<span class="tag">${p.title}</span></button>`;
+  }).join("");
+}
+
+function setSection(id){ current=id; renderHighlights(); renderSection(); renderGrid(); }
+
+// post modal
+let post=null, slide=0;
+function openPost(i){ post=POSTS[i]; slide=post.photos.findIndex(x=>x[1]==="After"); if(slide<0) slide=0; drawPost(); $("#postModal").hidden=false; document.body.style.overflow="hidden"; }
+function closePost(){ $("#postModal").hidden=true; document.body.style.overflow=""; }
+function drawSlide(){
+  const [f,label] = post.photos[slide];
+  const inner = f ? `<img src="${img(f)}" alt="${post.title}, ${label.toLowerCase()}">`
+                  : `<div class="ph"><div><b>Before photo</b>To be added</div></div>`;
+  $("#media").innerHTML = inner + `<span class="slab">${label} · ${slide+1}/${post.photos.length}</span>` +
+    (slide>0?`<button class="nav prev" aria-label="Previous photo">‹</button>`:"") +
+    (slide<post.photos.length-1?`<button class="nav next" aria-label="Next photo">›</button>`:"") +
+    `<div class="dots">${post.photos.map((_,k)=>`<i class="${k===slide?"on":""}"></i>`).join("")}</div>`;
+}
+function drawPost(){
+  const sec = SECTIONS.find(s=>s.id===post.sec);
+  $("#pcat").textContent = sec.name;
+  const counts = ["Before","During","After"].map(l=>[l,post.photos.filter(x=>x[1]===l&&x[0]).length]).filter(x=>x[1]);
+  $("#caption").innerHTML = `<h3>${post.title}</h3>
+    <div class="chips">${counts.map(([l,n])=>`<span class="chip">${n} ${l.toLowerCase()}</span>`).join("")}</div>
+    <div><h4>Process</h4><p>${post.process}</p></div>
+    <div><h4>Tools &amp; products</h4><p>${post.tools}</p></div>
+    <div><h4>Challenges</h4><p>${post.challenges}</p></div>
+    <div><h4>Outcome &amp; reflection</h4><p>${post.outcome}</p></div>`;
+  drawSlide();
+}
+function go(d){ const n=slide+d; if(n>=0&&n<post.photos.length){slide=n;drawSlide();} }
+
+document.addEventListener("click", e=>{
+  const sec = e.target.closest("[data-sec]"); if(sec){ setSection(sec.dataset.sec); return; }
+  const t = e.target.closest("[data-post]"); if(t){ openPost(+t.dataset.post); return; }
+  if(e.target.closest(".nav.prev")) go(-1);
+  else if(e.target.closest(".nav.next")) go(1);
+  else if(e.target.id==="postModal"||e.target.closest("#closePost")) closePost();
+  else if(e.target.id==="stModal"||e.target.closest("#closeSt")) { $("#stModal").hidden=true; document.body.style.overflow=""; }
+  else if(e.target.closest("#openStatement")) { $("#stModal").hidden=false; document.body.style.overflow="hidden"; }
+});
+document.addEventListener("keydown", e=>{
+  if(!$("#postModal").hidden){ if(e.key==="ArrowLeft") go(-1); if(e.key==="ArrowRight") go(1); if(e.key==="Escape") closePost(); }
+  else if(!$("#stModal").hidden && e.key==="Escape"){ $("#stModal").hidden=true; document.body.style.overflow=""; }
+});
+let sx=null;
+$("#media").addEventListener("touchstart",e=>{sx=e.touches[0].clientX},{passive:true});
+$("#media").addEventListener("touchend",e=>{ if(sx===null)return; const dx=e.changedTouches[0].clientX-sx; if(Math.abs(dx)>40) go(dx<0?1:-1); sx=null; });
+
+renderStats(); setSection("all");
+
+// ---------- hub router ----------
+const VIEWS = {home:"view-home", portfolio:"view-portfolio", colour:"view-colour", perm:"view-perm"};
+const CRUMBS = {portfolio:"Project 1 · Styling Portfolio", colour:"Project 2 · Colour Theory", perm:"Project 3 · Hollywood Perm"};
+function showView(v){
+  if(!VIEWS[v]) v="home";
+  Object.entries(VIEWS).forEach(([k,id])=>{ document.getElementById(id).hidden = (k!==v); });
+  document.getElementById("menubar").hidden = (v==="home");
+  document.getElementById("crumb").textContent = CRUMBS[v]||"";
+  window.scrollTo(0,0);
+  try{ if(v==="home"){ history.replaceState(null,"",location.pathname+location.search); } else { history.replaceState(null,"","#"+v); } }catch(e){}
+}
+document.addEventListener("click", e=>{
+  const v = e.target.closest("[data-view]"); if(v){ showView(v.dataset.view); return; }
+  const j = e.target.closest("[data-jump]"); if(j){ const t=document.getElementById(j.dataset.jump); if(t) t.scrollIntoView({behavior: matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth"}); }
+});
+window.addEventListener("hashchange", ()=>showView(location.hash.slice(1)));
+
+// colour wheels
+const WCOL=["#F7DC1E","#F9B317","#F28C1E","#E8572A","#D7262E","#A8236A","#6E2C8E","#4A3A9A","#2459A8","#1E8C8A","#2E9A48","#9CC63A"];
+const WNAME=["Yellow","Yellow-Orange","Orange","Red-Orange","Red","Red-Violet","Violet","Blue-Violet","Blue","Blue-Green","Green","Yellow-Green"];
+const WKIND=["P","T","S","T","P","T","S","T","P","T","S","T"];
+function wedge(cx,cy,r0,r1,a0,a1){
+  const p=(r,a)=>[cx+r*Math.cos(a),cy+r*Math.sin(a)];
+  const [x0,y0]=p(r1,a0),[x1,y1]=p(r1,a1),[x2,y2]=p(r0,a1),[x3,y3]=p(r0,a0);
+  return `M${x0} ${y0}A${r1} ${r1} 0 0 1 ${x1} ${y1}L${x2} ${y2}A${r0} ${r0} 0 0 0 ${x3} ${y3}Z`;
+}
+function drawWheel(svg,cx,cy,r0,r1,labels){
+  let h="";
+  for(let i=0;i<12;i++){
+    const a0=(-90-15+i*30)*Math.PI/180, a1=a0+30*Math.PI/180;
+    h+=`<path d="${wedge(cx,cy,r0,r1,a0,a1)}" fill="${WCOL[i]}" stroke="var(--bg)" stroke-width="2"/>`;
+    if(labels){
+      const am=(-90+i*30)*Math.PI/180, lr=r1+16, x=cx+lr*Math.cos(am), y=cy+lr*Math.sin(am)+4;
+      const anchor=Math.abs(Math.cos(am))<.2?"middle":(Math.cos(am)>0?"start":"end");
+      const w=WKIND[i]==="P"?700:(WKIND[i]==="S"?600:400);
+      h+=`<text x="${x}" y="${y}" text-anchor="${anchor}" font-size="11" font-weight="${w}" fill="var(--fg)" font-family="Figtree, Arial, sans-serif">${WNAME[i]}</text>`;
+    }
+  }
+  svg.innerHTML=h;
+}
+drawWheel(document.getElementById("docWheel"),180,180,52,112,true);
+drawWheel(document.getElementById("cardWheel"),100,75,24,58,false);
+(function(){ // perm card: rows of rods
+  const s=document.getElementById("cardPerm"); let h="";
+  const sizes=[9,9,11,11,13,13];
+  sizes.forEach((r,row)=>{ for(let c=0;c<6;c++){ const x=28+c*29, y=20+row*22; h+=`<rect x="${x-12}" y="${y-r/2}" width="24" height="${r}" rx="${r/2}" fill="${row%2?"var(--accent)":"#9db8e3"}" opacity="${.55+.07*row}"/>`; } });
+  s.innerHTML=h;
+})();
+showView(location.hash.slice(1)||"home");
+
+</script>
+
+</body></html>
